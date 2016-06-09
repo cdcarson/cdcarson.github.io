@@ -18,14 +18,15 @@ var onError = function (err) {
     this.emit('end');
 };
 var build = function (callback) {
-	delete require.cache[require.resolve('./build.js')];
-	require('./build.js')(callback);
+	delete require.cache[require.resolve('./_site/build.js')];
+	require('./_site/build.js')(callback);
 
 };
 
 gulp.task('build', function (cb) {
 	build(function () {
-
+		gulp.src('./_site/build/**/*.*')
+			.pipe(gulp.dest('./'));
 	});
 });
 
@@ -39,14 +40,14 @@ gulp.task('default', function (cb) {
 	build(function () {
 		browserSync.init({
 	        server: {
-	            baseDir: './build'
+	            baseDir: './_site/build'
 	        },
 			open: false
 	    });
-		watch(['./src/**/*.md', './layouts/**/*.swig', './build.js'], function () {
+		watch(['./_site/**/*'], function () {
 			build(function () {});
 		});
-		watch(['./build/**/*'], function () {
+		watch(['./_site/build/**/*'], function () {
 			browserSync.reload();
 		});
 	});
