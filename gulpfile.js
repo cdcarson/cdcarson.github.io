@@ -17,19 +17,24 @@ var onError = function (err) {
     gutil.beep();
     this.emit('end');
 };
+var build = function (callback) {
+	delete require.cache[require.resolve('./build.js')];
+	require('./build.js')(callback);
 
+};
 
+gulp.task('build', function (cb) {
+	build(function () {
+
+	});
+});
 
 
 gulp.task('default', function (cb) {
 	var watch = require('gulp-watch');
 	var plumber = require('gulp-plumber');
 	var browserSync = require('browser-sync').create();
-	var build = function (callback) {
-		delete require.cache[require.resolve('./build.js')];
-		require('./build.js')(callback);
 
-	};
 
 	build(function () {
 		browserSync.init({
